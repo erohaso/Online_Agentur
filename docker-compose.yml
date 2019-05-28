@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  nginx: 
+    image: nginx:1.15-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - "./docker/nginx/etc/default.conf:/etc/nginx/conf.d/default.conf"
+      - "./src:/usr/share/nginx/html"
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - "./src:/usr/share/nginx/html"
+  mysql:
+    image: mariadb:10.4
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db
+      - MYSQL_USER=db
+      - MYSQL_PASSWORD=db
+    ports:
+      - "3306:3306"
